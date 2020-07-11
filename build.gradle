@@ -27,6 +27,7 @@ sourceSets {
 dependencies {
     compile project(":KBXHLBukkit")
     compile project(":KBXHLSponge")
+    compile project(":KBXHLForge")
 }
 
 jar {

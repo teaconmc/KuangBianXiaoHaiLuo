@@ -1,0 +1,91 @@
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
+
+buildscript {
+    repositories {
+        maven { url = 'https://files.minecraftforge.net/maven' }
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+
+group = 'org.teacon'
+
+configurations {
+    sourceCompatibility = targetCompatibility = 1.8
+    archivesBaseName = "KuangBianXiaoHaiLuo-Forge"
+}
+
+minecraft {
+    mappings channel: 'snapshot', version: '20200513-1.15.1'
+    
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            mods {
+                kbxhl_forge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run_server')
+            property 'forge.logging.console.level', 'info'
+            mods {
+                kbxhl_forge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.console.level', 'info'
+            args '--mod', 'kbxhl', '--all', '--output', file('src/generated/resources/')
+            mods {
+                kbxhl_forge {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+sourceSets {
+    main.java.srcDir project.file("src/main/java")
+    main.resources.srcDir project.file("src/main/resources")
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.15.2-31.2.4'
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = targetCompatibility = 1.8
+    options.encoding = "UTF-8"
+    options.compilerArgs << "-Xlint:all" << "-Xlint:-processing" << "-Werror"
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": "KBXHL",
+            "Specification-Vendor": "ustc-zzzz",
+            "Specification-Version": "1",
+            "Implementation-Title": "KBXHL-Forge",
+            "Implementation-Version": "${version}",
+            "Implementation-Vendor": "TeaConMC",
+            "Implementation-Timestamp": DateTimeFormatter.ISO_INSTANT.format(Instant.now().truncatedTo(ChronoUnit.SECONDS))
+        ])
+    }
+}
