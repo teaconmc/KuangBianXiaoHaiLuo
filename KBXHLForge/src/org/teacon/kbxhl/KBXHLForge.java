@@ -22,10 +22,14 @@ public final class KBXHLForge {
     private static final Pattern CHAT_PATTERN_2 = Pattern.compile("\u571f\u7403[\uff01\u0021]\u005c\u005c\u0073\u002a");
 
     static String version = "";
+    static KBXHLForge theMod;
 
-    private KBXHLScoreManager scoreManager;
+    KBXHLGame theGame = new KBXHLGame();
+    KBXHLConfig config = new KBXHLConfig();
+    KBXHLScoreManager scoreManager = new KBXHLScoreManager();
 
     public KBXHLForge() {
+        theMod = this;
         ModLoadingContext context = ModLoadingContext.get();
         version = context.getActiveContainer().getModInfo().getVersion().toString();
         context.registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (serverVer, isDedi) -> true));

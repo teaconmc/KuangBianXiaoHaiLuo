@@ -11,6 +11,10 @@ public abstract class KBXHLEvent extends Event {
         this.player = player;
     }
 
+    public ServerPlayerEntity getPlayer() {
+        return player;
+    }
+
     public static final class Start extends KBXHLEvent {
         public Start(ServerPlayerEntity player) {
             super(player);
